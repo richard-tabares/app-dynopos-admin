@@ -11,6 +11,7 @@ export const ClientFormModal = ({ onClose, onSuccess }) => {
         phone: '',
         password: '',
         billing_frequency: 'monthly',
+        payment_method: 'transfer',
     })
     const [showPassword, setShowPassword] = useState(false)
     const [loading, setLoading] = useState(false)
@@ -153,6 +154,36 @@ export const ClientFormModal = ({ onClose, onSuccess }) => {
                         <option value='quarterly' className='text-on-body'>Trimestral</option>
                         <option value='annual' className='text-on-body'>Anual</option>
                     </select>
+                </section>
+
+                <section className='flex flex-col gap-2'>
+                    <label className='block text-sm font-medium text-on-body'>
+                        Método de pago
+                    </label>
+                    <div className='flex gap-4'>
+                        <label className='flex items-center gap-2 cursor-pointer'>
+                            <input
+                                type='radio'
+                                name='payment_method'
+                                value='transfer'
+                                checked={form.payment_method === 'transfer'}
+                                onChange={handleChange}
+                                className='accent-accent'
+                            />
+                            <span className='text-sm text-on-body'>Transferencia</span>
+                        </label>
+                        <label className='flex items-center gap-2 cursor-pointer'>
+                            <input
+                                type='radio'
+                                name='payment_method'
+                                value='card'
+                                checked={form.payment_method === 'card'}
+                                onChange={handleChange}
+                                className='accent-accent'
+                            />
+                            <span className='text-sm text-on-body'>Tarjeta</span>
+                        </label>
+                    </div>
                 </section>
 
                 <section className='flex justify-end gap-4 pt-4 border-t border-divider'>

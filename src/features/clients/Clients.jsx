@@ -184,12 +184,16 @@ export const Clients = () => {
                                                         <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'>
                                                             Activa
                                                         </span>
+                                                    ) : subStatus === 'past_due' ? (
+                                                        <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'>
+                                                            Vencida
+                                                        </span>
                                                     ) : subStatus === 'cancelled' ? (
                                                         <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'>
                                                             Cancelada
                                                         </span>
                                                     ) : (
-                                                        <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'>
+                                                        <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'>
                                                             Expirada
                                                         </span>
                                                     )}

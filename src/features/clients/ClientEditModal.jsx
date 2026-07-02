@@ -35,7 +35,12 @@ export const ClientEditModal = ({ client, onClose, onSuccess }) => {
 
     const sub = liveSub
     const isActive = sub?.status === 'active'
+    const isPastDue = sub?.status === 'past_due'
     const extendDateExpired = extendDate && extendDate < new Date().toLocaleDateString('en-CA')
+    const daysPastDue = sub?.past_due_at
+        ? Math.floor((new Date().getTime() - new Date(sub.past_due_at).getTime()) / (1000 * 60 * 60 * 24))
+        : 0
+    const graceRemaining = Math.max(0, 7 - daysPastDue)
 
     const handleChange = (e) => {
         setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -102,11 +107,11 @@ export const ClientEditModal = ({ client, onClose, onSuccess }) => {
         try {
             await manualRenewal(client.id)
             const freq = liveSub?.billing_frequency || 'monthly'
-            const daysMap = { monthly: 30, quarterly: 90, annual: 365 }
-            // const now = new Date()
             const now = liveSub?.current_period_end
-            console.log(now)
-            const newEndDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + (daysMap[freq] || 30))
+            const newEndDate = new Date(now)
+            if (freq === 'annual') newEndDate.setFullYear(newEndDate.getFullYear() + 1)
+            else if (freq === 'quarterly') newEndDate.setMonth(newEndDate.getMonth() + 3)
+            else newEndDate.setMonth(newEndDate.getMonth() + 1)
             const newEnd = newEndDate.toLocaleDateString('en-CA')
             setLiveSub((prev) => ({ ...prev, current_period_end: newEnd, status: 'active' }))
             setExtendDate(newEnd)
@@ -217,10 +222,12 @@ export const ClientEditModal = ({ client, onClose, onSuccess }) => {
                                 <div className='flex items-center gap-3'>
                                     {isActive ? (
                                         <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700 dark:bg-green-900/20 dark:text-green-400'>Activa</span>
+                                    ) : isPastDue ? (
+                                        <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'>Vencida ({graceRemaining} días)</span>
                                     ) : sub?.status === 'cancelled' ? (
                                         <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'>Cancelada</span>
                                     ) : (
-                                        <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-yellow-100 text-yellow-700 dark:bg-yellow-900/20 dark:text-yellow-400'>Expirada</span>
+                                        <span className='px-2.5 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700 dark:bg-red-900/20 dark:text-red-400'>Expirada</span>
                                     )}
                                     <button
                                         onClick={handleToggle}
@@ -255,6 +262,22 @@ export const ClientEditModal = ({ client, onClose, onSuccess }) => {
                                     </button>
                                 </div>
                             </div>
+
+                            <div className='flex items-center justify-between py-2'>
+                                <span className='text-sm text-on-body'>Método de pago</span>
+                                <span className='text-sm font-medium text-on-surface'>
+                                    {sub?.payment_method === 'card' ? 'Tarjeta' : 'Transferencia'}
+                                </span>
+                            </div>
+
+                            {isPastDue && (
+                                <div className='flex items-center justify-between py-2'>
+                                    <span className='text-sm text-on-body'>Días de gracia</span>
+                                    <span className='text-sm font-medium text-yellow-600'>
+                                        {graceRemaining} restantes
+                                    </span>
+                                </div>
+                            )}
 
                             <div className='flex items-center gap-3 py-2'>
                                 <span className='text-sm text-on-body shrink-0'>Extender</span>
