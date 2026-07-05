@@ -8,6 +8,7 @@ const pageInfo = [
     { path: '/clients', title: 'Clientes', description: 'Administra los negocios registrados' },
     { path: '/support', title: 'Soporte', description: 'Gestiona los tickets de soporte' },
     { path: '/payments', title: 'Pagos', description: 'Historial de transacciones' },
+    { path: '/changelog', title: 'Novedades', description: 'Administra las novedades del sistema' },
 ]
 
 export const Header = () => {

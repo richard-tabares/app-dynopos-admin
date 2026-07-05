@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import {
-    LayoutDashboard, Users, LifeBuoy, CreditCard,
+    LayoutDashboard, Users, LifeBuoy, CreditCard, Megaphone,
     X, LogOut, PanelLeftClose, PanelLeftOpen,
 } from 'lucide-react'
 import { NavLink, useNavigate } from 'react-router'
@@ -13,6 +13,7 @@ const menuItems = [
     { id: 'clients', label: 'Clientes', icon: Users, path: '/clients' },
     { id: 'support', label: 'Soporte', icon: LifeBuoy, path: '/support' },
     { id: 'payments', label: 'Pagos', icon: CreditCard, path: '/payments' },
+    { id: 'changelog', label: 'Novedades', icon: Megaphone, path: '/changelog' },
 ]
 
 export const SideBar = () => {

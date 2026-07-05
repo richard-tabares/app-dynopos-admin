@@ -8,6 +8,8 @@ import { Dashboard } from './features/dashboard/Dashboard.jsx'
 import { Clients } from './features/clients/Clients.jsx'
 import { Support } from './features/support/Support.jsx'
 import { Payments } from './features/payments/Payments.jsx'
+import { ChangelogList } from './features/changelog/pages/ChangelogList.jsx'
+import { ChangelogForm } from './features/changelog/pages/ChangelogForm.jsx'
 
 export const App = () => {
     const token = useStore((state) => state.token)
@@ -29,6 +31,9 @@ export const App = () => {
                             <Route path='/clients' element={<Clients />} />
                             <Route path='/support' element={<Support />} />
                             <Route path='/payments' element={<Payments />} />
+                            <Route path='/changelog' element={<ChangelogList />} />
+                            <Route path='/changelog/new' element={<ChangelogForm />} />
+                            <Route path='/changelog/:id/edit' element={<ChangelogForm />} />
                             <Route path='/*' element={<Navigate to='/dashboard' replace />} />
                         </Route>
                     ) : (
