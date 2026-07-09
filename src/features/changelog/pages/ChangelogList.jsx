@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
-import { Plus, Sparkles, ArrowUp, Bug, Pencil, Trash2, Loader, Search, Megaphone } from 'lucide-react'
+import { Plus, Sparkles, ArrowUp, Bug, Trash2, Loader, Search, Megaphone } from 'lucide-react'
 import { sileo } from 'sileo'
 import { getChangelog } from '../helpers/getChangelog.js'
 import { deleteChangelog } from '../helpers/deleteChangelog.js'
@@ -127,7 +127,8 @@ export const ChangelogList = () => {
                                     return (
                                         <tr
                                             key={entry.id}
-                                            className={`border-b border-divider transition-colors hover:bg-hover/50 ${idx % 2 === 0 ? '' : 'bg-hover/30'}`}
+                                            onClick={() => navigate(`/changelog/${entry.id}/edit`)}
+                                            className={`border-b border-divider transition-colors hover:bg-hover/50 cursor-pointer ${idx % 2 === 0 ? '' : 'bg-hover/30'}`}
                                         >
                                             <td className='px-4 py-3 text-muted font-mono text-xs'>#{entry.id}</td>
                                             <td className='px-4 py-3 font-medium max-w-xs truncate'>{entry.title}</td>
@@ -147,14 +148,7 @@ export const ChangelogList = () => {
                                             <td className='px-4 py-3 text-right'>
                                                 <section className='flex items-center justify-end gap-1'>
                                                     <button
-                                                        onClick={() => navigate(`/changelog/${entry.id}/edit`)}
-                                                        className='p-1.5 rounded-lg text-muted hover:text-accent hover:bg-accent/10 transition-colors cursor-pointer'
-                                                        title='Editar'
-                                                    >
-                                                        <Pencil className='w-4 h-4' />
-                                                    </button>
-                                                    <button
-                                                        onClick={() => setShowDelete(entry)}
+                                                        onClick={(e) => { e.stopPropagation(); setShowDelete(entry) }}
                                                         className='p-1.5 rounded-lg text-muted hover:text-red-500 hover:bg-red-500/10 transition-colors cursor-pointer'
                                                         title='Eliminar'
                                                     >
